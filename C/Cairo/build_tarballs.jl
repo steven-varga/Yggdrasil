@@ -57,8 +57,11 @@ dependencies = [
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/Pixman-v0.36.0-0/build_Pixman.v0.36.0.jl",
     "https://github.com/JuliaGraphics/FreeTypeBuilder/releases/download/v2.9.1-4/build_FreeType2.v2.10.0.jl",
     "https://github.com/JuliaPackaging/Yggdrasil/releases/download/Bzip2-v1.0.6-2/build_Bzip2.v1.0.6.jl",
-    "https://github.com/giordano/Yggdrasil/releases/download/X11-v1.6.8/build_X11.v1.6.8.jl",
-    "https://github.com/JuliaPackaging/Yggdrasil/releases/download/LZO-v2.10.0%2B0/build_LZO.v2.10.0.jl",
+    "https://github.com/giordano/Yggdrasil/releases/download/Cairo-v1.14.12/build_X11.v1.6.8.jl",
+    "https://github.com/giordano/Yggdrasil/releases/download/Cairo-v1.14.12/build_LZO.v2.10.0.jl",
+    "https://github.com/giordano/Yggdrasil/releases/download/Cairo-v1.14.12/build_Libuuid.v2.34.0.jl",
+    "https://github.com/giordano/Yggdrasil/releases/download/Cairo-v1.14.12/build_Expat.v2.2.7.jl",
+    "https://github.com/giordano/Yggdrasil/releases/download/Cairo-v1.14.12/build_Fontconfig.v2.13.1.jl",
 ]
 
 
