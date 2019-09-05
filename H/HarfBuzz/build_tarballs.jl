@@ -1,6 +1,6 @@
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 name = "HarfBuzz"
 version = v"2.6.1"
@@ -31,10 +31,10 @@ make install
 platforms = [p for p in supported_platforms() if !(p isa Union{MacOS,Windows})]
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libharfbuzz", :libharfbuzz),
-    LibraryProduct("libharfbuzz-subset", :libharfbuzz_subset),
-    LibraryProduct("libharfbuzz-gobject", :libharfbuzz_gobject),
+products(prefix) = [
+    LibraryProduct(prefix, "libharfbuzz", :libharfbuzz),
+    LibraryProduct(prefix, "libharfbuzz-subset", :libharfbuzz_subset),
+    LibraryProduct(prefix, "libharfbuzz-gobject", :libharfbuzz_gobject),
 ]
 
 # Dependencies that must be installed before this package can be built

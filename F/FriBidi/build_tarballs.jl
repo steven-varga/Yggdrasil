@@ -24,9 +24,9 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libfribidi", :libfribidi),
-    ExecutableProduct("fribidi", :fribidi)
+products(prefix) = [
+    LibraryProduct(prefix, "libfribidi", :libfribidi),
+    ExecutableProduct(prefix, "fribidi", :fribidi)
 ]
 
 # Dependencies that must be installed before this package can be built

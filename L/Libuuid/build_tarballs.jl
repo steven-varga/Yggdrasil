@@ -1,6 +1,6 @@
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 name = "Libuuid"
 version = v"2.34"
@@ -24,8 +24,8 @@ make install
 platforms = [p for p in supported_platforms() if !(p isa Union{Windows,MacOS})]
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libuuid", :libuuid)
+products(prefix) = [
+    LibraryProduct(prefix, "libuuid", :libuuid)
 ]
 
 # Dependencies that must be installed before this package can be built

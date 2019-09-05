@@ -46,8 +46,8 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libcairo", :libcairo),
+products(prefix) = [
+    LibraryProduct(prefix, "libcairo", :libcairo),
 ]
 
 # Dependencies that must be installed before this package can be built

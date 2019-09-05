@@ -24,8 +24,8 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = Product[
-    LibraryProduct("liblzo2", :liblzo2)
+products(prefix) = Product[
+    LibraryProduct(prefix, "liblzo2", :liblzo2)
 ]
 
 # Dependencies that must be installed before this package can be built

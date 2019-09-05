@@ -1,6 +1,6 @@
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 name = "X11"
 version = v"1.6.8"
@@ -82,9 +82,9 @@ done
 platforms = [p for p in supported_platforms() if !isa(p, MacOS) && !isa(p, Windows)]
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libX11", :libX11),
-    LibraryProduct("libX11-xcb", :libX11_xcb)
+products(prefix) = [
+    LibraryProduct(prefix, "libX11", :libX11),
+    LibraryProduct(prefix, "libX11-xcb", :libX11_xcb)
 ]
 
 # Dependencies that must be installed before this package can be built

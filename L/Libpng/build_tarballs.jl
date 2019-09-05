@@ -25,8 +25,8 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libpng16", :libpng)
+products(prefix) = [
+    LibraryProduct(prefix, "libpng16", :libpng)
 ]
 
 # Dependencies that must be installed before this package can be built

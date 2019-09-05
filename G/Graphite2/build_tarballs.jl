@@ -1,6 +1,6 @@
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 name = "Graphite2"
 version = v"1.3.13"
@@ -25,8 +25,8 @@ make install
 platforms = [p for p in supported_platforms() if !(p isa Windows)]
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libgraphite2", :libgraphite2),
+products(prefix) = [
+    LibraryProduct(prefix, "libgraphite2", :libgraphite2),
 ]
 
 # Dependencies that must be installed before this package can be built

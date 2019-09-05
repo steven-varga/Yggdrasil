@@ -34,9 +34,9 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libpango", :libpango),
-    LibraryProduct("libpangocairo", :libpangocairo),
+products(prefix) = [
+    LibraryProduct(prefix, "libpango", :libpango),
+    LibraryProduct(prefix, "libpangocairo", :libpangocairo),
 ]
 
 # Dependencies that must be installed before this package can be built

@@ -34,12 +34,12 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libgio", :libgio),
-    LibraryProduct("libglib", :libglib),
-    LibraryProduct("libgmodule", :libgmodule),
-    LibraryProduct("libgobject", :libgobject),
-    LibraryProduct("libgthread", :libgthread),
+products(prefix) = [
+    LibraryProduct(prefix, "libgio", :libgio),
+    LibraryProduct(prefix, "libglib", :libglib),
+    LibraryProduct(prefix, "libgmodule", :libgmodule),
+    LibraryProduct(prefix, "libgobject", :libgobject),
+    LibraryProduct(prefix, "libgthread", :libgthread),
 ]
 
 # Dependencies that must be installed before this package can be built

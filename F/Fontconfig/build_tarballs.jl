@@ -1,6 +1,6 @@
 # Note that this script can accept some limited command-line arguments, run
 # `julia build_tarballs.jl --help` to see a usage message.
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 name = "Fontconfig"
 version = v"2.13.1"
@@ -40,8 +40,8 @@ make install
 platforms = [p for p in supported_platforms() if !(p isa Windows)]
 
 # The products that we will ensure are always built
-products = Product[
-    LibraryProduct("libfontconfig", :libfontconfig)
+products(prefix) = Product[
+    LibraryProduct(prefix, "libfontconfig", :libfontconfig)
 ]
 
 # Dependencies that must be installed before this package can be built

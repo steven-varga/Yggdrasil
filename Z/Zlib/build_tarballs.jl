@@ -24,8 +24,8 @@ make install -j${nproc} ${EXTRA_MAKE_FLAGS}
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libz", :libz),
+products(prefix) = [
+    LibraryProduct(prefix, "libz", :libz),
 ]
 
 # Dependencies that must be installed before this package can be built

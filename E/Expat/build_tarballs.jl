@@ -24,9 +24,9 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libexpat", :libexpat),
-    ExecutableProduct("xmlwf", :xmlwf)
+products(prefix) = [
+    LibraryProduct(prefix, "libexpat", :libexpat),
+    ExecutableProduct(prefix, "xmlwf", :xmlwf)
 ]
 
 # Dependencies that must be installed before this package can be built

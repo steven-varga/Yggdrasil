@@ -1,4 +1,4 @@
-using BinaryBuilder, Pkg.BinaryPlatforms
+using BinaryBuilder
 
 # Collection of sources required to build Pixman
 name = "Pixman"
@@ -22,8 +22,8 @@ make install
 platforms = supported_platforms()
 
 # The products that we will ensure are always built
-products = [
-    LibraryProduct("libpixman", :libpixman)
+products(prefix) = [
+    LibraryProduct(prefix, "libpixman", :libpixman)
 ]
 
 # Dependencies that must be installed before this package can be built
