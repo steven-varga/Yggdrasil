@@ -3,26 +3,28 @@
 using BinaryBuilder
 
 name = "Pango"
-version = v"1.42.4"
+version = v"1.44.6"
 
 # Collection of sources required to build Pango
 sources = [
     "http://ftp.gnome.org/pub/GNOME/sources/pango/$(version.major).$(version.minor)/pango-$(version).tar.xz" =>
-    "1d2b74cd63e8bd41961f2f8d952355aa0f9be6002b52c8aa7699d9f5da597c9d"
+    "3e1e41ba838737e200611ff001e3b304c2ca4cdbba63d200a20db0b0ddc0f86c"
 ]
 
 # Bash recipe for building across all platforms
 script = raw"""
 cd $WORKSPACE/srcdir/pango-*/
+mkdir build && cd build
 
-./configure --prefix=$prefix --host=$target \
-    --disable-introspection \
-    --disable-gtk-doc-html
-# The generated Makefile tries to build some examples in the "tests" directory,
-# but this would fail for some unknown reasons.  Let's skip it.
-sed -i 's/^\(SUBDIRS = .*\) tests/\1/' Makefile
-make -j${nproc}
-make install
+FLAGS=()
+if [[ "${target}" == *-apple-* ]]; then
+    # We have FontConfig for macOS, so let's use it
+    FLAGS+=(-Duse_fontconfig=true)
+fi
+
+meson .. -Dintrospection=false "${FLAGS[@]}" --cross-file="${MESON_TARGET_TOOLCHAIN}"
+ninja -j${nproc}
+ninja install
 """
 
 # These are the platforms we will build for by default, unless further
