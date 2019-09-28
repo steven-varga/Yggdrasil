@@ -9,31 +9,29 @@ version = v"3.24.11"
 sources = [
     "http://ftp.gnome.org/pub/gnome/sources/gtk+/$(version.major).$(version.minor)/gtk+-$(version).tar.xz" =>
     "dba7658d0a2e1bfad8260f5210ca02988f233d1d86edacb95eceed7eca982895",
+    "./bundled"
 ]
 
 # Bash recipe for building across all platforms
 script = raw"""
 cd $WORKSPACE/srcdir/gtk+-*/
 
-mkdir build-gtk
-cd build-gtk
 
 # We need to run some commands with a native Glib
 apk add glib-dev
 # This is awful, I know
-rm ${prefix}/bin/glib-compile-resources
-ln -s /usr/bin/glib-compile-resources ${prefix}/bin/glib-compile-resources
+ln -sf /usr/bin/glib-compile-resources ${prefix}/bin/glib-compile-resources
+ln -sf /usr/bin/glib-compile-schemas ${prefix}/bin/glib-compile-schemas
 
-meson .. \
-    -Dx11_backend=false \
-    -Dwayland_backend=false \
-    -Dintrospection=false \
-    -Ddemos=false \
-    -Dexamples=false \
-    -Dtests=false \
-    --cross-file="${MESON_TARGET_TOOLCHAIN}"
-ninja -j${nproc}
-ninja install
+atomic_patch -p1 $WORKSPACE/srcdir/patches/gdkwindow-quartz_c.patch
+atomic_patch -p1 $WORKSPACE/srcdir/patches/Makefile_in.patch
+FLAGS=()
+if [[ "${target}" == *-apple-* ]]; then
+    FLAGS+=( --disable-x11-backend --enable-quartz-backend)
+fi
+./configure --prefix=${prefix} --host=${target} "${FLAGS[@]}"
+make -j${nproc}
+make install
 """
 
 # These are the platforms we will build for by default, unless further
@@ -42,6 +40,9 @@ platforms = [p for p in supported_platforms() if p isa MacOS]
 
 # The products that we will ensure are always built
 products = Product[
+    LibraryProduct("libgailutil-3", :libgailutil3),
+    LibraryProduct("libgdk-3", :libgdk3),
+    LibraryProduct("libgtk-3", :libgtk3),
 ]
 
 # Dependencies that must be installed before this package can be built
