@@ -14,11 +14,9 @@ jobs:
   steps:
   - bash: |
       FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
-      i=0
       echo -n "##vso[task.setVariable variable=legs;isOutput=true]{"
       for file in ${FILES}; do
-          echo -n "'${i}':{'myvar':'${file}'}, "
-          ((i++))
+          echo -n "'$(basename ${file})':{'myvar':'${file}'}, "
       done
       echo "}"
     name: mtrx
