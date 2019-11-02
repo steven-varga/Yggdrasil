@@ -13,18 +13,20 @@ jobs:
 - job: generator
   steps:
   - bash: |
-      FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+      PROJECTS=$(git diff-tree --no-commit-id --name-only -r HEAD | grep -E ".+/.+" | cut -d/ -f1,2 | sort -u)
+      EXCLUDE_PROJECTS=" LLVMBootstrap Rootfs "
       echo -n "##vso[task.setVariable variable=legs;isOutput=true]{"
-      for file in ${FILES}; do
-          echo -n "'$(basename ${file})':{'myvar':'${file}'}, "
+      # TODO: deal with empty PROJECTS.  Related: filter excluded projects
+      # before entering the for loop
+      for PROJECT in ${PROJECTS}; do
+          NAME=$(basename "${PROJECT}")
+          if [[ "${EXCLUDE_PROJECTS}" == *" ${NAME} "* ]]; then
+              continue
+          fi
+          echo -n "'${NAME}':{'myvar':'${PROJECT}'}, "
       done
       echo "}"
     name: mtrx
-  # This expands to the matrix
-  #   a:
-  #     myvar: A
-  #   b:
-  #     myvar: B
 - job: runner
   dependsOn: generator
   strategy:
