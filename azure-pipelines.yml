@@ -13,8 +13,14 @@ jobs:
 - job: generator
   steps:
   - bash: |
-      git diff-tree --no-commit-id --name-only -r HEAD
-      echo "##vso[task.setVariable variable=legs;isOutput=true]{'a':{'myvar':'A'}, 'b':{'myvar':'B'}}"
+      FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+      i=0
+      echo -n "##vso[task.setVariable variable=legs;isOutput=true]{"
+      for file in ${FILES}; do
+          echo -n "'${i}':{'myvar':'${file}'}, "
+          ((i++))
+      done
+      echo "}"
     name: mtrx
   # This expands to the matrix
   #   a:
