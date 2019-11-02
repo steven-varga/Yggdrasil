@@ -9,12 +9,21 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-  - script: |
+jobs:
+- job: generator
+  steps:
+  - bash: |
       git diff-tree --no-commit-id --name-only -r HEAD
-    displayName: 'Show files modified in last commit'
-
-# - script: |
-#     echo Add other tasks to build, test, and deploy your project.
-#     echo See https://aka.ms/yaml
-#   displayName: 'Run a multi-line script'
+      echo "##vso[task.setVariable variable=legs;isOutput=true]{'a':{'myvar':'A'}, 'b':{'myvar':'B'}}"
+    name: mtrx
+  # This expands to the matrix
+  #   a:
+  #     myvar: A
+  #   b:
+  #     myvar: B
+- job: runner
+  dependsOn: generator
+  strategy:
+    matrix: $[ dependencies.generator.outputs['mtrx.legs'] ]
+  steps:
+  - script: echo $(myvar) # echos A or B depending on which leg is running
