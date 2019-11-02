@@ -6,8 +6,7 @@
 trigger:
 - azure*
 
-# pool:
-#   vmImage: 'ubuntu-latest'
+pool: Default
 
 jobs:
 - job: generator
@@ -32,4 +31,8 @@ jobs:
   strategy:
     matrix: $[ dependencies.generator.outputs['mtrx.legs'] ]
   steps:
-  - script: echo $(myvar) # echos A or B depending on which leg is running
+  - script: |
+      echo "Hostname is \"$(hostname)\""
+      echo "I am in \"$(pwd)\""
+      echo "Here there are \"$(ls)\""
+      echo $(myvar)
