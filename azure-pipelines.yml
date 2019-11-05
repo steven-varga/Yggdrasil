@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - azure*
 
@@ -32,7 +27,9 @@ jobs:
     matrix: $[ dependencies.generator.outputs['mtrx.legs'] ]
   steps:
   - script: |
-      echo "Hostname is \"$(hostname)\""
-      echo "I am in \"$(pwd)\""
-      echo "Here there are \"$(ls)\""
-      echo $(myvar)
+      docker run --rm --privileged -v "${HOME}/.julia/dev/BinaryBuilder/deps:/storage" -v "${PWD}:/workspace" -w "/workspace/$(myvar)" -e "TERM=xterm-16color" staticfloat/binarybuilder.jl:master julia --color=yes ./build_tarballs.jl --verbose
+    displayName: "Build the tarballs"
+  - script: |
+      docker run --rm --privileged -v "${HOME}/.julia/dev/BinaryBuilder/deps:/storage" -v "${PWD}:/workspace" -w "/workspace/$(myvar)" -e "TERM=xterm-16color" staticfloat/binarybuilder.jl:master bash -c "rm -rf build products"
+    displayName: "Cleanup"
+    condition: always() # We need to run this even if the build fails
