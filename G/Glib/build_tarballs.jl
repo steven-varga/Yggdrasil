@@ -20,6 +20,8 @@ SED_SCRIPT=()
 # cross-file has already entries for `c_link_args`, so we have to append.
 if [[ "${target}" == powerpc64le-* ]]; then
     SED_SCRIPT+=(-e "s?c_link_args = \[\(.*\)]?c_link_args = [\1, '-liconv']?")
+elif [[ "${target}" == *-freebsd* ]]; then
+    SED_SCRIPT+=(-e "s?c_link_args = \[]?c_link_args = ['-L${libdir}', '-liconv']?")
 else
     SED_SCRIPT+=(-e "s?c_link_args = \[]?c_link_args = ['-liconv']?")
 fi
