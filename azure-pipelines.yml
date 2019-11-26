@@ -8,7 +8,7 @@ variables:
   NICE_VARIABLE: $(MAPPED_SUPER_SECRET_VARIABLE)
   VAR_A: A
   VAR_B: B
-  VAR_AB: "$(A) and $(B)"
+  VAR_AB: "$(VAR_A) and $(VAR_B)"
 
 jobs:
 - job: generator
@@ -26,5 +26,5 @@ jobs:
       print_log "This is the value of my variable: \"$(NICE_VARIABLE)\""
       print_log "This is the value of VAR_A: \"${VAR_A}\""
       print_log "This is the value of VAR_B: \"${VAR_B}\""
-      print_log "This is the value of VAR_AB: \"${VAR_AB}\""
+      print_log "This is the value of VAR_AB: \"$(VAR_AB)\""
     name: mtrx
