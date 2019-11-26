@@ -3,33 +3,14 @@ trigger:
 
 pool: Default
 
+variables:
+  MAPPED_SUPER_SECRET_VARIABLE: $(SUPER_SECRET_VARIABLE)
+  NICE_VARIABLE: $MAPPED_SUPER_SECRET_VARIABLE
+
 jobs:
 - job: generator
   steps:
   - bash: |
-      PROJECTS=$(git diff-tree --no-commit-id --name-only -r HEAD | grep -E ".+/.+" | cut -d/ -f1,2 | sort -u)
-      EXCLUDE_PROJECTS=" LLVMBootstrap Rootfs "
-      echo -n "##vso[task.setVariable variable=legs;isOutput=true]{"
-      # TODO: deal with empty PROJECTS.  Related: filter excluded projects
-      # before entering the for loop
-      for PROJECT in ${PROJECTS}; do
-          NAME=$(basename "${PROJECT}")
-          if [[ "${EXCLUDE_PROJECTS}" == *" ${NAME} "* ]]; then
-              continue
-          fi
-          echo -n "'${NAME}':{'myvar':'${PROJECT}'}, "
-      done
-      echo "}"
+      echo "This is the value of my variable: \"${NICE_VARIABLE}\""
+      echo "This is the value of my variable: \"${NICE_VARIABLE}\"" > ${HOME}/test.log
     name: mtrx
-- job: runner
-  dependsOn: generator
-  strategy:
-    matrix: $[ dependencies.generator.outputs['mtrx.legs'] ]
-  steps:
-  - script: |
-      docker run --rm --privileged -v "${HOME}/.julia/dev/BinaryBuilder/deps:/storage" -v "${PWD}:/workspace" -w "/workspace/$(myvar)" -e "TERM=xterm-16color" staticfloat/binarybuilder.jl:master julia --color=yes ./build_tarballs.jl --verbose
-    displayName: "Build the tarballs"
-  - script: |
-      docker run --rm --privileged -v "${HOME}/.julia/dev/BinaryBuilder/deps:/storage" -v "${PWD}:/workspace" -w "/workspace/$(myvar)" -e "TERM=xterm-16color" staticfloat/binarybuilder.jl:master bash -c "rm -rf build products"
-    displayName: "Cleanup"
-    condition: always() # We need to run this even if the build fails
