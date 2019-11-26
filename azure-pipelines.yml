@@ -12,8 +12,10 @@ jobs:
   - bash: |
       echo "This is the value of my variable: \"${NICE_VARIABLE}\""
       echo "This is the value of my variable: \"${NICE_VARIABLE}\"" > ${HOME}/test.log
-      echo "This is the value of my secret variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\""
-      echo "This is the value of my secret variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\"" >> ${HOME}/test.log
+      echo "This is the value of my mapped variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\""
+      echo "This is the value of my mapped variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\"" >> ${HOME}/test.log
+      echo "This is the value of my secret variable: \"$(SUPER_SECRET_VARIABLE)\""
+      echo "This is the value of my secret variable: \"$(SUPER_SECRET_VARIABLE)\"" >> ${HOME}/test.log
     name: mtrx
     env:
       NICE_VARIABLE: ${MAPPED_SUPER_SECRET_VARIABLE}
