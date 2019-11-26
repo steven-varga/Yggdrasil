@@ -28,4 +28,4 @@ jobs:
     name: mtrx
     env:
       NICE_VARIABLE: ${MAPPED_SUPER_SECRET_VARIABLE}
-      VAR_AB: "$A and $B"
+      VAR_AB: "$(A) and $(B)"
