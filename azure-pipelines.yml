@@ -16,4 +16,4 @@ jobs:
       echo "This is the value of my secret variable: \"$(SUPER_SECRET_VARIABLE)\"" >> ${HOME}/test.log
     name: mtrx
     env:
-      NICE_VARIABLE: $MAPPED_SUPER_SECRET_VARIABLE
+      NICE_VARIABLE: ${MAPPED_SUPER_SECRET_VARIABLE}
