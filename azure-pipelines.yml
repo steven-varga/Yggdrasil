@@ -5,7 +5,6 @@ pool: Default
 
 variables:
   MAPPED_SUPER_SECRET_VARIABLE: $(SUPER_SECRET_VARIABLE)
-  NICE_VARIABLE: $MAPPED_SUPER_SECRET_VARIABLE
 
 jobs:
 - job: generator
@@ -14,3 +13,5 @@ jobs:
       echo "This is the value of my variable: \"${NICE_VARIABLE}\""
       echo "This is the value of my variable: \"${NICE_VARIABLE}\"" > ${HOME}/test.log
     name: mtrx
+    env:
+      NICE_VARIABLE: $MAPPED_SUPER_SECRET_VARIABLE
