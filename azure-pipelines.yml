@@ -21,6 +21,7 @@ jobs:
 
       rm ${LOG_FILE}
       print_log "This is the value of my secret variable: \"$(SUPER_SECRET_VARIABLE)\""
+      print_log "This is the value of my secret bash variable: \"${SUPER_SECRET_VARIABLE}\""
       print_log "This is the value of my mapped variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\""
       print_log "This is the value of my variable: \"$(NICE_VARIABLE)\""
       print_log "This is the value of VAR_A: \"${VAR_A}\""
