@@ -5,8 +5,10 @@ pool: Default
 
 variables:
   MAPPED_SUPER_SECRET_VARIABLE: $(SUPER_SECRET_VARIABLE)
+  NICE_VARIABLE: $(MAPPED_SUPER_SECRET_VARIABLE)
   VAR_A: A
   VAR_B: B
+  VAR_AB: "$(A) and $(B)"
 
 jobs:
 - job: generator
@@ -26,6 +28,3 @@ jobs:
       print_log "This is the value of VAR_B: \"${VAR_B}\""
       print_log "This is the value of VAR_AB: \"${VAR_AB}\""
     name: mtrx
-  variables:
-    NICE_VARIABLE: $(MAPPED_SUPER_SECRET_VARIABLE)
-    VAR_AB: "$(A) and $(B)"
