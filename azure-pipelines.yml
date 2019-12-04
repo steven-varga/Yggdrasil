@@ -18,13 +18,9 @@ jobs:
           echo "$@" >> "${LOG_FILE}"
       }
 
-      rm ${LOG_FILE}
-      print_log "This is the value of my secret variable: \"$(SUPER_SECRET_VARIABLE)\""
-      print_log "This is the value of my mapped variable: \"${MAPPED_SUPER_SECRET_VARIABLE}\""
-      print_log "This is the value of my variable: \"${NICE_VARIABLE}\""
-      print_log "This is the value of VAR_A: \"${VAR_A}\""
-      print_log "This is the value of VAR_B: \"${VAR_B}\""
-      print_log "This is the value of VAR_AB: \"${VAR_AB}\""
+      rm -f ${LOG_FILE}
+      docker run --rm -e MAPPED_SUPER_SECRET_VARIABLE staticfloat/binarybuilder.jl:master julia -e 'println("\"", ENV["MAPPED_SUPER_SECRET_VARIABLE"], "\"")'
+
     name: mtrx
     env:
       NICE_VARIABLE: ${MAPPED_SUPER_SECRET_VARIABLE}
