@@ -19,6 +19,7 @@ jobs:
       }
 
       rm -f ${LOG_FILE}
+      print_log "MAPPED_SUPER_SECRET_VARIABLE = \"$(MAPPED_SUPER_SECRET_VARIABLE)\""
       docker run --rm -e MAPPED_SUPER_SECRET_VARIABLE staticfloat/binarybuilder.jl:master julia -e 'println("\"", ENV["MAPPED_SUPER_SECRET_VARIABLE"], "\"")'
 
     name: mtrx
