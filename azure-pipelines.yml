@@ -19,8 +19,11 @@ jobs:
       }
 
       rm -f ${LOG_FILE}
-      print_log "NICE_VARIABLE = \"$(NICE_VARIABLE)\""
-      docker run --rm -e NICE_VARIABLE staticfloat/binarybuilder.jl:master julia -e 'println("\"", ENV["NICE_VARIABLE"], "\"")'
+      # print_log "NICE_VARIABLE = \"$(NICE_VARIABLE)\""
+      # docker run --rm -e NICE_VARIABLE staticfloat/binarybuilder.jl:master julia -e 'println("\"", ENV["NICE_VARIABLE"], "\"")'
+
+      echo "##vso[task.logissue type=error]Something went very wrong."
+      echo "##vso[task.logissue type=warning]Something went somewhat wrong."
 
     name: mtrx
     env:
