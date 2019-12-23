@@ -18,7 +18,8 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$prefix -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TARGET_T
     -DCMAKE_BUILD_TYPE=Release \
     -DGLFW_BUILD_EXAMPLES=false \
     -DGLFW_BUILD_TESTS=false \
-    -DGLFW_BUILD_DOCS=OFF
+    -DGLFW_BUILD_DOCS=OFF \
+    -DGLFW_USE_WAYLAND=ON
 make -j${nproc}
 make install
 """
@@ -39,6 +40,10 @@ dependencies = [
     "Xorg_libXi_jll",
     "Xorg_libXinerama_jll",
     "Xorg_libXrandr_jll",
+    "xkbcommon_jll",
+    "Wayland_jll",
+    "Wayland_protocols_jll",
+    "extra_cmake_modules_jll"
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
