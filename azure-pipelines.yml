@@ -12,18 +12,9 @@ jobs:
 - job: generator
   steps:
   - bash: |
-      LOG_FILE=${HOME}/test.log
-      print_log () {
-          echo "$@"
-          echo "$@" >> "${LOG_FILE}"
-      }
-
-      rm -f ${LOG_FILE}
-      # print_log "NICE_VARIABLE = \"$(NICE_VARIABLE)\""
-      # docker run --rm -e NICE_VARIABLE staticfloat/binarybuilder.jl:master julia -e 'println("\"", ENV["NICE_VARIABLE"], "\"")'
-
-      echo "##vso[task.logissue type=error]Something went very wrong."
-      echo "##vso[task.logissue type=warning]Something went somewhat wrong."
+      git checkout master
+      cd Z/ZeroMQ
+      julia --color=yes build_tarballs.jl --debug --verbose x86_64-linux-gnu
 
     name: mtrx
     env:
