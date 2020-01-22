@@ -12,7 +12,6 @@ jobs:
 - job: generator
   steps:
   - bash: |
-      env
       git checkout master
       cd Z/ZeroMQ
       export TERM=xterm-16color
