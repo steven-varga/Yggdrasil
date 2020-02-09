@@ -5,20 +5,20 @@ version = v"5.4.0"
 
 # Collection of sources required to build SuiteSparse
 sources = [
-    "https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v$(version).tar.gz" =>
-    "d9d62d539410d66550d0b795503a556830831f50087723cb191a030525eda770",
+    "http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-$(version).tar.gz" =>
+    "374dd136696c653e34ef3212dc8ab5b61d9a67a6791d5ec4841efb838e94dbd1",
     "./bundled",
 ]
 
 # Bash recipe for building across all platforms
 script = raw"""
-cd $WORKSPACE/srcdir/SuiteSparse-*
+cd $WORKSPACE/srcdir/SuiteSparse/
 
 # Apply Jameson's shlib patch
 atomic_patch -p1 ${WORKSPACE}/srcdir/patches/SuiteSparse-shlib.patch
 
 # Disable OpenMP as it will probably interfere with blas threads and Julia threads
-FLAGS=(INSTALL="${prefix}" INSTALL_LIB="${libdir}" INSTALL_INCLUDE="${prefix}/include" MY_METIS_LIB="-lmetis" MY_METIS_INC="${prefix}/include" CFOPENMP=)
+FLAGS=(INSTALL="${prefix}" INSTALL_LIB="${libdir}" INSTALL_INCLUDE="${prefix}/include" CFOPENMP=)
 
 if [[ ${target} == *mingw32* ]]; then
     FLAGS+=(UNAME=Windows)
@@ -32,9 +32,10 @@ if [[ ${nbits} == 64 ]] && [[ ${target} != aarch64* ]]; then
     SUN="-DSUN64 -DLONGBLAS='long long'"
 
     FLAGS+=(BLAS="-lopenblas64_" LAPACK="-lopenblas64_")
-    FLAGS+=(UMFPACK_CONFIG="$SUN" CHOLMOD_CONFIG="$SUN" SPQR_CONFIG="$SUN")
+    FLAGS+=(UMFPACK_CONFIG="$SUN" CHOLMOD_CONFIG="$SUN -DNPARTITION" SPQR_CONFIG="$SUN")
 else
     FLAGS+=(BLAS="-lopenblas" LAPACK="-lopenblas")
+    FLAGS+=(CHOLMOD_CONFIG="-DNPARTITION")
 fi
 
 make -j${nproc} -C SuiteSparse_config "${FLAGS[@]}" library config
@@ -61,14 +62,20 @@ if [[ ${target} == *-apple-* ]] || [[ ${target} == *freebsd* ]]; then
     done
 fi
 
-# Compile SuiteSparse_wrapper shim
+# Compile suitesparse_wrapper shim
 cd $WORKSPACE/srcdir/SuiteSparse_wrapper
-"${CC}" -O2 -shared -fPIC -I${prefix}/include SuiteSparse_wrapper.c -o ${libdir}/libsuitesparse_wrapper.${dlext} -L${libdir} -lcholmod
+make "${FLAGS[@]}" install
+
+# if [[ "${target}" == *-mingw* ]]; then
+#     rm ${libdir}/lib*.*.${dlext} ${libdir}/lib*.*.*.${dlext}
+# fi
+
+install_license ${WORKSPACE}/srcdir/SuiteSparse/LICENSE.txt
 """
 
 # These are the platforms we will build for by default, unless further
 # platforms are passed in on the command line
-platforms = supported_platforms()
+platforms = [p for p in supported_platforms() if p isa Windows]
 
 # The products that we will ensure are always built
 products = [
@@ -90,8 +97,7 @@ products = [
 # Dependencies that must be installed before this package can be built
 dependencies = [
     "OpenBLAS_jll",
-    "METIS_jll",
 ]
 
-# Build the tarballs.
+# Build the tarballs, and possibly a `build.jl` as well.
 build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies)
