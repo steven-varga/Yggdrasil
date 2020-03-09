@@ -3,12 +3,12 @@
 using BinaryBuilder
 
 name = "Xorg_libxcb"
-version = v"1.13"
+version = v"1.14"
 
 # Collection of sources required to build libxcb
 sources = [
-    ArchiveSource("https://www.x.org/archive/individual/xcb/libxcb-$(version.major).$(version.minor).tar.bz2",
-                  "188c8752193c50ff2dbe89db4554c63df2e26a2e47b0fa415a70918b5b851daa"),
+    ArchiveSource("https://www.x.org/archive/individual/xcb/libxcb-$(version.major).$(version.minor).tar.xz",
+                  "a55ed6db98d43469801262d81dc2572ed124edc3db31059d4e9916eb9f844c34"),
 ]
 
 # Bash recipe for building across all platforms
