@@ -3,12 +3,12 @@
 using BinaryBuilder
 
 name = "Xorg_xcb_proto"
-version = v"1.13"
+version = v"1.14"
 
 # Collection of sources required to build xcb-proto
 sources = [
-    "https://www.x.org/archive/individual/xcb/xcb-proto-$(version.major).$(version.minor).tar.bz2" =>
-    "7b98721e669be80284e9bbfeab02d2d0d54cd11172b72271e47a2fe875e2bde1",
+    ArchiveSource("https://www.x.org/archive/individual/xcb/xcb-proto-$(version.major).$(version.minor).tar.xz",
+                  "186a3ceb26f9b4a015f5a44dcc814c93033a5fc39684f36f1ecc79834416a605"),
 ]
 
 # Bash recipe for building across all platforms
@@ -30,7 +30,7 @@ products = Product[
 ]
 
 # Dependencies that must be installed before this package can be built
-dependencies = [
+dependencies = Dependency[
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
